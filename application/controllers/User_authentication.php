@@ -20,11 +20,11 @@ $this->load->library('session');
 $this->load->model('login_database');
 
 // Load Metodos
-$this->load->model('metodos');
+//$this->load->model('metodos');
 }
 
 public function index(){
-
+	$this->load->view('login_form');
 }
 
 
