@@ -55,11 +55,12 @@ if ($this->form_validation->run() == FALSE) {
 		$result = $this->login_database->read_user_information($username);
 		if ($result != false) {
 			$session_data = array(
-			'username' => $result->usuario
+			'username' => $result->usuario,
+			'privilegios'=>$result->privilegios
 			);
 			// Add user data in session
 			$this->session->set_userdata('logged_in', $session_data);
-			//redirect(base_url().'administracion/','refresh');
+			redirect(base_url().'administracion/','refresh');
 		}
 	} else {
 		$data = array(

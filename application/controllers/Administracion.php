@@ -24,8 +24,64 @@ $this->load->model('login_database');
 }
 
 public function index(){
-	//echo $user;
-	echo "<a href=\"".base_url()."administracion/admin_users/\">Admin users</a>";
+	if(isset($this->session->userdata['logged_in'])){
+
+	}else{
+		redirect(base_url(),'refresh');
+	}
+}
+
+public function registrar_alumno(){
+	$this->form_validation->set_rules('nombre', 'Nombre del niño', 'trim|required|xss_clean|alpha');
+	$this->form_validation->set_rules('apellido_paterno', 'Apellido Paterno', 'trim|required|xss_clean|alpha');
+	$this->form_validation->set_rules('apellido_materno', 'Apellido Materno', 'trim|required|xss_clean|alpha');
+	$this->form_validation->set_rules('fecha_nac', 'Fecha de Nacimiento', 'trim|required|xss_clean');
+	$this->form_validation->set_rules('escuela', 'Escuela donde estudia', 'trim|required|xss_clean|alpha_numeric');
+	$this->form_validation->set_rules('pad_nombre', 'Nombre del padre', 'trim|required|xss_clean|alpha');
+	$this->form_validation->set_rules('pad_apellido_p', 'Apellido Paterno Del Padre', 'trim|required|xss_clean|alpha');
+	$this->form_validation->set_rules('pad_apellido_m', 'Apellido Materno Del Padre', 'trim|required|xss_clean|alpha');
+	$this->form_validation->set_rules('domicilio', 'Domicilio', 'trim|required|xss_clean|alpha_numeric');
+	$this->form_validation->set_rules('correo', 'Correo Electronico', 'trim|required|xss_clean|valid_email');
+	$this->form_validation->set_rules('telefono', 'Telefono', 'trim|required|xss_clean|numeric');
+	$this->form_validation->set_rules('id_talla', 'Talla de playera', 'trim|required|xss_clean|numeric');
+	$this->form_validation->set_rules('id_entero', 'Como se entero de este curso?', 'trim|required|xss_clean|numeric');
+	$this->form_validation->set_rules('entero', 'Otros', 'trim|xss_clean|alpha_numeric');
+	$this->form_validation->set_rules('id_plantel', 'Plantel', 'trim|required|xss_clean|numeric');
+	$this->form_validation->set_rules('id_programa', 'Programa', 'trim|required|xss_clean|numeric');
+	$this->form_validation->set_rules('id_grupo', 'Grupo', 'trim|required|xss_clean|alpha');
+	$this->form_validation->set_rules('id_nivel', 'Grado Escolar', 'trim|required|xss_clean|numeric');
+
+	if ($this->form_validation->run() == FALSE) {
+		$this->load->view('registrar_alumno');
+	}else{
+		$data= array(
+			'nombre'=>$this->input->post('nombre'),
+			'apellido_paterno'=>$this->input->post('apellido_paterno'),
+			'apellido_materno'=>$this->input->post('apellido_materno'),
+			'fecha_nac'=>$this->input->post('fecha_nac'),
+			'escuela'=>$this->input->post('escuela'),
+			'pad_nombre'=>$this->input->post('pad_nombre'),
+			'pad_apellido_p'=>$this->input->post('pad_apellido_p'),
+			'pad_apellido_m'=>$this->input->post('pad_apellido_m'),
+			'domicilio'=>$this->input->post('domicilio'),
+			'correo'=>$this->input->post('correo'),
+			'telefono'=>$this->input->post('telefono'),
+			'id_talla'=>$this->input->post('id_talla'),
+			'id_entero'=>$this->input->post('id_entero'),
+			'entero'=>$this->input->post('entero'),
+			'id_plantel'=>$this->input->post('id_plantel'),
+			'id_programa'=>$this->input->post('id_programa'),
+			'id_grupo'=>$this->input->post('id_grupo'),
+			'id_nivel'=>$this->input->post('id_nivel')
+			);
+		$this->load->model('metodos');
+		$result=$this->metodos->registrar_alumno($data);
+		if($result!=FALSE){
+			return "Folio: ".$result;
+		}else{
+			return "FALSE";
+		}
+	}
 }
 
 public function admin_users(){
