@@ -41,6 +41,30 @@ public function registration_insert($data){
 	}
 }
 
+public function read_users(){
+	$query=$this->db->get('usuarios');
+	if($query->num_rows()>0){
+		return $query->result();
+	}else{
+		return FALSE;
+	}
+}
+
+public function delete_user($username){
+	if($this->user_exists($username)){
+		$this->db->where('usuario',$username);
+		$this->db->delete('usuarios');
+		if($this->db->affected_rows()>0){
+			return TRUE;
+		}else{
+			return FALSE;
+		}
+	}else{
+		return FALSE;
+	}
+
+}
+
 public function user_exists($username){
 	$this->db->where('usuario',$username);
 	$query = $this->db->get('usuarios');

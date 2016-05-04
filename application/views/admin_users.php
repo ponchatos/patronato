@@ -25,5 +25,28 @@ Privilegios de Administrador:
 <input type="checkbox" name="privilegios"/><br><br>
 <input type="submit" name="enviar" value="Registrar"/>
 </form>
+<br><br><br>
+<?php 
+	if(isset($usuarios)){
+		echo "
+		<table>
+			<tr>
+				<th>Usuario</th>
+				<th>Nombre</th>
+				<th>Apellidos</th>
+				<th>Plantel</th>
+				<th>Eliminar</th>
+			</tr>";
+		foreach ($usuarios as $key ) {
+			echo "<tr>";
+			echo "<td>".$key['usuario']."</td>";
+			echo "<td>".$key['nombre']."</td>";
+			echo "<td>".$key['apellido']."</td>";
+			echo "<td>".$key['plantel']."</td>";
+			echo "<td></td></tr>";
+		}
+		echo "</table>";
+	}
+?>
 </body>
 </html>

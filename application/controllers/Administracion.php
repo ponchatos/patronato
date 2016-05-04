@@ -34,7 +34,23 @@ public function admin_users(){
 		if($usuario->privilegios<99){
 			redirect($this->index(),'refresh');
 		}else{
-			$this->load->view('admin_users');
+			$result=$this->login_database->read_users();
+			if($result!=FALSE){
+				//$array 
+				foreach ($result as $row) {
+					$array['usuarios'][] = array(
+						'usuario'=>$row->usuario,
+						'nombre'=>$row->nombre,
+						'apellido'=>$row->apellido_paterno.' '.$row->apellido_materno,
+						'plantel'=>$row->id_plantel,
+						'id_usuario'=>$row->id_usuario
+						);
+				}
+				$this->load->view('admin_users',$array);
+			}else{
+				$this->load->view('admin_users');
+			}
+			
 		}
 	}else{
 		redirect(base_url(),'refresh');
