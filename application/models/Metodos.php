@@ -33,7 +33,8 @@ public function registrar_alumno($data){
 			'id_usuario'=>$data['id_usuario'],
 			'id_grupo'=>$data['id_grupo'],
 			'id_nivel'=>$data['id_nivel'],
-			'id_entero'=>$entero
+			'id_entero'=>$entero,
+			'costo'=>$data['costo']
 			);
 		$return = $this->registrar_inscripcion($sendd);
 		if($return!=FALSE){

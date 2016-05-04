@@ -29,8 +29,8 @@ public function index(){
 
 public function user_login_process() {
 	//valida los campos username y password
-$this->form_validation->set_rules('username', 'Usuario', 'trim|required|xss_clean|alpha_numeric');
-$this->form_validation->set_rules('password', 'Contraseña', 'trim|required|xss_clean|alpha_numeric');
+$this->form_validation->set_rules('username', 'Usuario', 'trim|required|xss_clean');
+$this->form_validation->set_rules('password', 'Contraseña', 'trim|required|xss_clean');
 $this->form_validation->set_message('alpha_numeric','El campo %s solo puede contener caracteres alfanumericos');
 if ($this->form_validation->run() == FALSE) {
 	//si el usuario ya esta logeado se manda a la pagina del juego

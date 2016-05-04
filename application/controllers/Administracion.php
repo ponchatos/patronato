@@ -37,20 +37,22 @@ public function registrar_alumno(){
 		$this->form_validation->set_rules('apellido_paterno', 'Apellido Paterno', 'trim|required|xss_clean|alpha');
 		$this->form_validation->set_rules('apellido_materno', 'Apellido Materno', 'trim|required|xss_clean|alpha');
 		$this->form_validation->set_rules('fecha_nac', 'Fecha de Nacimiento', 'trim|required|xss_clean');
-		$this->form_validation->set_rules('escuela', 'Escuela donde estudia', 'trim|required|xss_clean|alpha_numeric');
-		$this->form_validation->set_rules('pad_nombre', 'Nombre del padre', 'trim|required|xss_clean|alpha');
+		$this->form_validation->set_rules('escuela', 'Escuela donde estudia', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('pad_nombre', 'Nombre del padre', 'trim|required|xss_clean');
 		$this->form_validation->set_rules('pad_apellido_p', 'Apellido Paterno Del Padre', 'trim|required|xss_clean|alpha');
 		$this->form_validation->set_rules('pad_apellido_m', 'Apellido Materno Del Padre', 'trim|required|xss_clean|alpha');
-		$this->form_validation->set_rules('domicilio', 'Domicilio', 'trim|required|xss_clean|alpha_numeric');
+		$this->form_validation->set_rules('domicilio', 'Domicilio', 'trim|required|xss_clean');
 		$this->form_validation->set_rules('correo', 'Correo Electronico', 'trim|required|xss_clean|valid_email');
 		$this->form_validation->set_rules('telefono', 'Telefono', 'trim|required|xss_clean|numeric');
 		$this->form_validation->set_rules('id_talla', 'Talla de playera', 'trim|required|xss_clean|numeric');
 		$this->form_validation->set_rules('id_entero', 'Como se entero de este curso?', 'trim|required|xss_clean|numeric');
-		$this->form_validation->set_rules('entero', 'Otros', 'trim|xss_clean|alpha_numeric');
+		$this->form_validation->set_rules('entero', 'Otros', 'trim|xss_clean');
 		$this->form_validation->set_rules('id_plantel', 'Plantel', 'trim|required|xss_clean|numeric');
 		$this->form_validation->set_rules('id_programa', 'Programa', 'trim|required|xss_clean|numeric');
 		$this->form_validation->set_rules('id_grupo', 'Grupo', 'trim|required|xss_clean|numeric');
 		$this->form_validation->set_rules('id_nivel', 'Grado Escolar', 'trim|required|xss_clean|numeric');
+		$this->form_validation->set_rules('costo','Costo','trim|required|xss_clean|numeric');
+
 
 		if ($this->form_validation->run() == FALSE) {
 			$this->load->view('barra_nav');
@@ -77,7 +79,8 @@ public function registrar_alumno(){
 				'id_programa'=>$this->input->post('id_programa'),
 				'id_grupo'=>$this->input->post('id_grupo'),
 				'id_nivel'=>$this->input->post('id_nivel'),
-				'id_usuario'=>$retu->id_usuario
+				'id_usuario'=>$retu->id_usuario,
+				'id_nivel'=>$this->input->post('costo')
 				);
 			$this->load->model('metodos');
 			$result=$this->metodos->registrar_alumno($data);

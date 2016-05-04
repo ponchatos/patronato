@@ -16,6 +16,7 @@
     </div>
     <p>Llena todos los campos en su totalidad.</p>
       <form d="form" action="<?php echo base_url().'administracion/admin_register_user';?>" method="post">
+      	<?php echo validation_errors(); ?>
         <ul class="left-form">
           <h2>Perfil:</h2>
           <li>

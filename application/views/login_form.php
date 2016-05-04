@@ -8,7 +8,7 @@
 
   <head>
     <title>Login</title>
-    <link href="css/style.css" rel='stylesheet' type='text/css' />
+    <link href="<?php echo base_url();?>css/style.css" rel='stylesheet' type='text/css' />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:600italic,400,300,600,700' rel='stylesheet' type='text/css'>
@@ -23,10 +23,11 @@
     <div class="login-form">
       <h1>INICIAR SESIÓN</h1>
           <div class="head">
-            <img src="css/images/log.jpg" alt=""/>
+            <img src="<?php echo base_url();?>css/images/log.jpg" alt=""/>
           </div>
 
         <form action=<?php echo '"'.base_url().'user_authentication/user_login_process/"'; ?> method="post">
+          <?php echo validation_errors(); ?>
             <input type="text" name="username" class="text" placeholder="USUARIO" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'USERNAME';}" >
             <input type="password" name="password" placeholder="CONTRASEÑA" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Password';}">
             <div class="submit">
