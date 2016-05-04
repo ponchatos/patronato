@@ -25,7 +25,7 @@ $this->load->model('login_database');
 
 public function index(){
 	if(isset($this->session->userdata['logged_in'])){
-
+		$this->registrar_alumno();
 	}else{
 		redirect(base_url(),'refresh');
 	}
