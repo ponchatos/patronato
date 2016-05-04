@@ -1,6 +1,6 @@
 <?php
 
-Class Login_Database extends CI_Model {
+Class Metodos extends CI_Model {
 
 public function registrar_alumno($data){
 	$send = array(
@@ -35,7 +35,7 @@ public function registrar_alumno($data){
 			'id_nivel'=>$data['id_nivel'],
 			'id_entero'=>$entero
 			);
-		$return = registrar_inscripcion($sendd);
+		$return = $this->registrar_inscripcion($sendd);
 		if($return!=FALSE){
 			//echo $return;
 			return $return;
@@ -48,7 +48,7 @@ public function registrar_alumno($data){
 
 public function registrar_inscripcion($data){
 	$this->db->insert('inscripcion',$data);
-	if($this->db->affected_rows>0){
+	if($this->db->affected_rows()>0){
 		return $this->db->insert_id();
 	}else{
 		return FALSE;
