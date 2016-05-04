@@ -10,7 +10,7 @@
 <body>
 <header id="main-header">
         
-        <img id="logo-header" id="tipo" src="css/images/pat.jpg">
+        <img id="logo-header" id="tipo" src="<?php echo base_url();?>css/images/pat.jpg">
         <nav>
             <ul>
                 <li><a href="#">REGISTRO</a></li>

@@ -25,6 +25,7 @@ $this->load->library('session');
 
 public function index(){
 	$this->load->view('barra_nav');
+	$this->load->view('admin_users');
 }
 
 }

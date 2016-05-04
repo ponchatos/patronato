@@ -1,56 +1,96 @@
 <!DOCTYPE html>
 <html>
 <head>
- 	<title>AGREGAR USUARIOS</title>
+    <meta charset="utf-8">
+    <link href="<?php echo base_url();?>css/styles.css" rel='stylesheet' type='text/css' />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <!--webfonts-->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text.css'/>
+    <!--//webfonts-->
 </head>
 <body>
-<div>
-	<?php if(isset($message)) echo $message; ?>
-</div>
-<form id="form" action="<?php echo base_url().'administracion/admin_register_user';?>" method="post"/>
-	<?php echo validation_errors(); ?>
-Usuario:<br>
-<input type="text" name="username" placeholder="Usuario" required/><br>
-Contraseña:<br>
-<input type="password" name="password" placeholder="Contraseña" required/><br>
-Nombre:<br>
-<input type="text" name="nombre" placeholder="nombre" required/><br>
-Apellido Paterno:<br>
-<input type="text" name="apellido_paterno" placeholder="apellido_paterno" required/><br>
-Apellido Materno:<br>
-<input type="text" name="apellido_materno" placeholder="apellido_materno" required/><br>
-Plantel del usuario: <br>
-<select form="form" name="plantel" required>
-	<option value="1">Oruga Mochicahui</option>
-	<option value="2">Oruga Centenario</option>
-	<option value="3">Oruga Palos Verdes</option>
-</select><br><br>
-Privilegios de Administrador: 
-<input type="checkbox" name="privilegios"/><br><br>
-<input type="submit" name="enviar" value="Registrar"/>
-</form>
-<br><br><br>
-<?php 
-	if(isset($usuarios)){
-		echo "
-		<table>
-			<tr>
-				<th>Usuario</th>
-				<th>Nombre</th>
-				<th>Apellidos</th>
-				<th>Plantel</th>
-				<th>Eliminar</th>
-			</tr>";
-		foreach ($usuarios as $key ) {
-			echo "<tr>";
-			echo "<td>".$key['usuario']."</td>";
-			echo "<td>".$key['nombre']."</td>";
-			echo "<td>".$key['apellido']."</td>";
-			echo "<td>".$key['plantel']."</td>";
-			echo "<td></td></tr>";
-		}
-		echo "</table>";
-	}
-?>
+  <div class="main">
+    <div class="header" >
+      <h1>REGISTRO DE CUENTAS DE USUARIO</h1>
+    </div>
+    <p>Llena todos los campos en su totalidad.</p>
+      <form d="form" action="<?php echo base_url().'administracion/admin_register_user';?>" method="post">
+        <ul class="left-form">
+          <h2>Perfil:</h2>
+          <li>
+            <input type="text"   name="username" placeholder="Nombre se Usuario" required/>
+            <a href="#" class="icon ticker"> </a>
+            <div class="clear"> </div>
+          </li> 
+          <li>
+            <input type="password"  name="password" placeholder="Contraseña" required/>
+            <a href="#" class="icon into"> </a>
+            <div class="clear"> </div>
+          </li>
+          <h2>Datos Personales:</h2>
+         <li>
+            <input type="text"  name="nombre" placeholder="Nombres" required/>
+            <a href="#" class="icon ticker"> </a>
+            <div class="clear"> </div>
+          </li> 
+           <li>
+            <input type="text"  name="apellido_paterno" placeholder="Apellido Paterno" required/>
+            <a href="#" class="icon ticker"> </a>
+            <div class="clear"> </div>
+          </li> 
+          <li>
+            <input type="text"  name="apellido_materno" placeholder="Apellido Materno" required/>
+            <a href="#" class="icon ticker"> </a>
+            <div class="clear"> </div>
+          </li> 
+           <h2>Plantel del usuario: </h2>
+			<select form="form" name="plantel" required>
+				<option value="1">Oruga Mochicahui</option>
+				<option value="2">Oruga Centenario</option>
+				<option value="3">Oruga Palos Verdes</option>
+			</select><br><br>
+  
+          <label class="checkbox"><input type="checkbox" name="privilegios"><i></i>¿Otorgar permisos de Administrador?</label>
+          <br>
+          <input type="submit" name="enviar" value="Crear Usuario">
+            <div class="clear"> </div>
+        </ul>
+        <ul class="right-form">
+				   <h3>Usuarios:</h3>
+		
+				<?php if(isset($usuarios)){
+						echo "
+						<table>
+							<tr>
+								<th>USUARIO</th>
+								<th>APELLIDOS</th>
+								<th>PLANTEL</th>
+								<th>ELIMI</th>
+							</tr>";
+						foreach ($usuarios as $key ) {
+							echo "<tr>";
+							echo "<td>".$key['usuario']."</td>";
+							echo "<td>".$key['apellido']."</td>";
+							echo "<td>".$key['plantel']."</td>";
+							echo "<td></td></tr>";
+						}
+						echo "</table>";
+					}?>
+
+          <div class="clear"> </div>
+        </ul>
+        <div class="clear"> </div>
+          
+      </form>
+      
+    </div>
+      <!-----start-copyright---->
+            <div class="copy-right">
+          
+          </div>
+        <!-----//end-copyright---->
+
+  
 </body>
 </html>
