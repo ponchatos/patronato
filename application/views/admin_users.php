@@ -1,4 +1,8 @@
+<!DOCTYPE html>
 <html>
+<head>
+ 	<title>AGREGAR USUARIOS</title>
+</head>
 <body>
 <div>
 	<?php if(isset($message)) echo $message; ?>
