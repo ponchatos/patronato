@@ -15,34 +15,30 @@
       <h1>REGISTRO DE CUENTAS DE USUARIO</h1>
     </div>
     <p>Llena todos los campos en su totalidad.</p>
-      <form d="form" action="<?php echo base_url().'administracion/admin_register_user';?>" method="post">
+      <form id="form" action="<?php echo base_url().'administracion/admin_register_user';?>" method="post">
       	<?php echo validation_errors(); ?>
         <ul class="left-form">
+          <?php if(isset($message)) echo "<div style='color:red;font-weight:bold;'>".$message."</div>"; ?>
           <h2>Perfil:</h2>
           <li>
             <input type="text"   name="username" placeholder="Nombre se Usuario" required/>
-            <a href="#" class="icon ticker"> </a>
             <div class="clear"> </div>
           </li> 
           <li>
             <input type="password"  name="password" placeholder="Contraseña" required/>
-            <a href="#" class="icon into"> </a>
             <div class="clear"> </div>
           </li>
           <h2>Datos Personales:</h2>
          <li>
             <input type="text"  name="nombre" placeholder="Nombres" required/>
-            <a href="#" class="icon ticker"> </a>
             <div class="clear"> </div>
           </li> 
            <li>
             <input type="text"  name="apellido_paterno" placeholder="Apellido Paterno" required/>
-            <a href="#" class="icon ticker"> </a>
             <div class="clear"> </div>
           </li> 
           <li>
             <input type="text"  name="apellido_materno" placeholder="Apellido Materno" required/>
-            <a href="#" class="icon ticker"> </a>
             <div class="clear"> </div>
           </li> 
            <h2>Plantel del usuario: </h2>
@@ -67,13 +63,19 @@
 								<th>USUARIO</th>
 								<th>APELLIDOS</th>
 								<th>PLANTEL</th>
-								<th>ELIMI</th>
+                <th>PRIVILEGIOS</th>
+								<th>ELIMINAR</th>
 							</tr>";
 						foreach ($usuarios as $key ) {
 							echo "<tr>";
 							echo "<td>".$key['usuario']."</td>";
 							echo "<td>".$key['apellido']."</td>";
 							echo "<td>".$key['plantel']."</td>";
+              $priv="";
+              if($key['privilegios']==99){
+                $priv="Administrador";
+              }
+              echo "<td>".$priv."</td>";
 							echo "<td></td></tr>";
 						}
 						echo "</table>";

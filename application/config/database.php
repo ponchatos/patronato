@@ -75,7 +75,7 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => '192.168.0.104',
+	'hostname' => '127.0.0.1',
 	'username' => 'patronato',
 	'password' => 'patronato',
 	'database' => 'patronato',

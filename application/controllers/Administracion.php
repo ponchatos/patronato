@@ -18,14 +18,96 @@ $this->load->library('session');
 
 // Load database
 $this->load->model('login_database');
+$this->load->model('leer_datos');
 
 // Load Metodos
-//$this->load->model('metodos');
+$this->load->model('metodos');
+}
+
+public function prueba(){
+	//var_dump($this->leer_datos->get_spinner_datas());
+	//$data=$this->leer_datos->get_spinner_datas();
+
+	//$this->load->view('pruebas');
 }
 
 public function index(){
 	if(isset($this->session->userdata['logged_in'])){
 		$this->registrar_alumno();
+	}else{
+		redirect(base_url(),'refresh');
+	}
+}
+
+public function get_grupos(){
+	if(isset($this->session->userdata['logged_in'])){
+		$this->form_validation->set_rules('id_plantel', 'ID del Plantel', 'trim|required|xss_clean|numeric');
+		
+		if ($this->form_validation->run() == FALSE) {
+			$return[]=array(
+				'success'=>-1,
+				'message'=>"El plantel es necesario"
+				);
+		}else{
+			$id_plantel=$this->input->post('id_plantel');
+			$ret=$this->leer_datos->get_grupos($id_plantel);
+			if($ret!=FALSE){
+				$return[]=array(
+					'success'=>1,
+					'message'=>'Satisfactorio'
+					);
+				foreach ($ret as $grupo) {
+					$return[]=array(
+						'id_grupo'=>$grupo['id_grupo'],
+						'nombre'=>$grupo['nombre'],
+						'cantidad'=>$grupo['cantidad']
+						);
+				}
+				
+			}else{
+				$return[]=array(
+					'success'=>0,
+					'message'=>"No existen grupos"
+					);
+			}
+		}
+		die(json_encode($return));
+	}else{
+		redirect(base_url(),'refresh');
+	}
+}
+
+public function add_grupo(){
+	if(isset($this->session->userdata['logged_in'])){
+		$this->form_validation->set_rules('id_plantel', 'ID del Plantel', 'trim|required|xss_clean|numeric');
+		$this->form_validation->set_rules('nombre', 'Nombre del Grupo', 'trim|required|xss_clean|alpha_numeric_spaces');
+		if ($this->form_validation->run() == FALSE) {
+			$return[]=array(
+				'success'=>-1,
+				'message'=>"Todos los campos son necesarios"
+				);
+		}else{
+			$send=array(
+				'id_plantel'=>$this->input->post('id_plantel'),
+				'nombre'=>$this->input->post('nombre')
+				);
+			$ret=$this->metodos->registrar_grupo($send);
+			if($ret!=FALSE){
+				$return[]=array(
+					'success'=>1,
+					'message'=>"Grupo registrado correctamente"
+					);
+				$return[]=array(
+					'id_grupo'=>$ret
+					);
+			}else{
+				$return[]=array(
+					'success'=>0,
+					'message'=>"Falló al registrar grupo"
+					);
+			}
+		}
+		die(json_encode($return));
 	}else{
 		redirect(base_url(),'refresh');
 	}
@@ -37,13 +119,15 @@ public function registrar_alumno(){
 		$this->form_validation->set_rules('apellido_paterno', 'Apellido Paterno', 'trim|required|xss_clean|alpha');
 		$this->form_validation->set_rules('apellido_materno', 'Apellido Materno', 'trim|required|xss_clean|alpha');
 		$this->form_validation->set_rules('fecha_nac', 'Fecha de Nacimiento', 'trim|required|xss_clean');
-		$this->form_validation->set_rules('escuela', 'Escuela donde estudia', 'trim|required|xss_clean');
+		$this->form_validation->set_rules('escuela', 'Escuela donde estudia', 'trim|xss_clean');
 		$this->form_validation->set_rules('pad_nombre', 'Nombre del padre', 'trim|required|xss_clean');
 		$this->form_validation->set_rules('pad_apellido_p', 'Apellido Paterno Del Padre', 'trim|required|xss_clean|alpha');
 		$this->form_validation->set_rules('pad_apellido_m', 'Apellido Materno Del Padre', 'trim|required|xss_clean|alpha');
 		$this->form_validation->set_rules('domicilio', 'Domicilio', 'trim|required|xss_clean');
 		$this->form_validation->set_rules('correo', 'Correo Electronico', 'trim|required|xss_clean|valid_email');
 		$this->form_validation->set_rules('telefono', 'Telefono', 'trim|required|xss_clean|numeric');
+		$this->form_validation->set_rules('telefonocel', 'Telefono Celular', 'trim|xss_clean|numeric');
+		$this->form_validation->set_rules('telefonotrabajo', 'Telefono Trabajo', 'trim|xss_clean|numeric');
 		$this->form_validation->set_rules('id_talla', 'Talla de playera', 'trim|required|xss_clean|numeric');
 		$this->form_validation->set_rules('id_entero', 'Como se entero de este curso?', 'trim|required|xss_clean|numeric');
 		$this->form_validation->set_rules('entero', 'Otros', 'trim|xss_clean');
@@ -55,8 +139,9 @@ public function registrar_alumno(){
 
 
 		if ($this->form_validation->run() == FALSE) {
+			$data=$this->leer_datos->get_spinner_datas();
 			$this->load->view('barra_nav');
-			$this->load->view('registrar_alumno');
+			$this->load->view('registrar_alumno',$data);
 		}else{
 			$retu = $this->login_database->read_user_information($this->session->userdata['logged_in']['username']);
 			//echo $retu->id_alumno;
@@ -72,6 +157,8 @@ public function registrar_alumno(){
 				'domicilio'=>$this->input->post('domicilio'),
 				'correo'=>$this->input->post('correo'),
 				'telefono'=>$this->input->post('telefono'),
+				'telefonocel'=>$this->input->post('telefonocel'),
+				'telefonotrabajo'=>$this->input->post('telefonotrabajo'),
 				'id_talla'=>$this->input->post('id_talla'),
 				'id_entero'=>$this->input->post('id_entero'),
 				'entero'=>$this->input->post('entero'),
@@ -80,16 +167,32 @@ public function registrar_alumno(){
 				'id_grupo'=>$this->input->post('id_grupo'),
 				'id_nivel'=>$this->input->post('id_nivel'),
 				'id_usuario'=>$retu->id_usuario,
-				'id_nivel'=>$this->input->post('costo')
+				'costo'=>$this->input->post('costo')
 				);
+			if($this->input->post('telefonocel')==null){
+				$data['telefonocel']="";
+			}
+			if($this->input->post('telefonotrabajo')==null){
+				$data['telefonotrabajo']="";
+			}
+			if($this->input->post('entero')==null){
+				$data['entero']="";
+			}
+			if($this->input->post('escuela')==null){
+				$data['escuela']="";
+			}
 			$this->load->model('metodos');
 			$result=$this->metodos->registrar_alumno($data);
 			if($result!=FALSE){
-				$arreglo=array('message'=>"Usuario registrado correctamente con el Folio: ".$result);
+				$arreglo=array();
+				$arreglo=$this->leer_datos->get_spinner_datas();
+				$arreglo['message']="Usuario registrado correctamente con el Folio: ".$result;
 				$this->load->view('barra_nav');
 				$this->load->view('registrar_alumno',$arreglo);
 			}else{
-				$arreglo=array('message'=>"Fallo la inscripcion del alumno");
+				$arreglo=array();
+				$arreglo=$this->leer_datos->get_spinner_datas();
+				$arreglo['message']="Fallo la inscripcion del alumno";
 				$this->load->view('barra_nav');
 				$this->load->view('registrar_alumno',$arreglo);
 			}
@@ -105,7 +208,7 @@ public function admin_users(){
 		if($usuario->privilegios<99){
 			redirect($this->index(),'refresh');
 		}else{
-			$result=$this->login_database->read_users();
+			$result=$this->login_database->read_vista_users();
 			if($result!=FALSE){
 				//$array 
 				foreach ($result as $row) {
@@ -113,8 +216,9 @@ public function admin_users(){
 						'usuario'=>$row->usuario,
 						'nombre'=>$row->nombre,
 						'apellido'=>$row->apellido_paterno.' '.$row->apellido_materno,
-						'plantel'=>$row->id_plantel,
-						'id_usuario'=>$row->id_usuario
+						'plantel'=>$row->plantel,
+						'id_usuario'=>$row->id_usuario,
+						'privilegios'=>$row->privilegios
 						);
 				}
 				$this->load->view('barra_nav');
@@ -138,14 +242,14 @@ if(isset($this->session->userdata['logged_in'])){
 	}else{
 		$this->form_validation->set_rules('username', 'Usuario', 'trim|required|xss_clean|alpha_numeric');
 		$this->form_validation->set_rules('password', 'Contraseña', 'trim|required|xss_clean|alpha_numeric');
-		$this->form_validation->set_rules('nombre', 'Nombre', 'trim|required|xss_clean|alpha');
+		$this->form_validation->set_rules('nombre', 'Nombre', 'trim|required|xss_clean|alpha_numeric_spaces');
 		$this->form_validation->set_rules('apellido_paterno', 'Apellido Paterno', 'trim|required|xss_clean|alpha');
 		$this->form_validation->set_rules('apellido_materno', 'Apellido Materno', 'trim|required|xss_clean|alpha');
 		$this->form_validation->set_rules('plantel','Plantel','required');
 		$this->form_validation->set_message('alpha_numeric','El campo %s solo puede contener caracteres alfanumericos');
 		$this->form_validation->set_message('alpha','El campo %s solo puede contener caracteres alfabéticos');
 		if ($this->form_validation->run() == FALSE) {
-			$result=$this->login_database->read_users();
+			$result=$this->login_database->read_vista_users();
 			if($result!=FALSE){
 				//$array 
 				foreach ($result as $row) {
@@ -153,8 +257,9 @@ if(isset($this->session->userdata['logged_in'])){
 						'usuario'=>$row->usuario,
 						'nombre'=>$row->nombre,
 						'apellido'=>$row->apellido_paterno.' '.$row->apellido_materno,
-						'plantel'=>$row->id_plantel,
-						'id_usuario'=>$row->id_usuario
+						'plantel'=>$row->plantel,
+						'id_usuario'=>$row->id_usuario,
+						'privilegios'=>$row->privilegios
 						);
 				}
 				$this->load->view('barra_nav');
@@ -181,7 +286,7 @@ if(isset($this->session->userdata['logged_in'])){
 				);
 			if($this->login_database->registration_insert($data)==TRUE){
 				$array=array('message'=>$data['usuario'].' agregado correctamente');
-				$result=$this->login_database->read_users();
+				$result=$this->login_database->read_vista_users();
 				if($result!=FALSE){
 					//$array 
 					foreach ($result as $row) {
@@ -189,8 +294,9 @@ if(isset($this->session->userdata['logged_in'])){
 							'usuario'=>$row->usuario,
 							'nombre'=>$row->nombre,
 							'apellido'=>$row->apellido_paterno.' '.$row->apellido_materno,
-							'plantel'=>$row->id_plantel,
-							'id_usuario'=>$row->id_usuario
+							'plantel'=>$row->plantel,
+							'id_usuario'=>$row->id_usuario,
+							'privilegios'=>$row->privilegios
 							);
 					}
 				}
@@ -198,7 +304,7 @@ if(isset($this->session->userdata['logged_in'])){
 				$this->load->view('admin_users',$array);
 			}else{
 				$array=array('message'=>'El usuario '.$data['usuario'].' ya existe');
-				$result=$this->login_database->read_users();
+				$result=$this->login_database->read_vista_users();
 				if($result!=FALSE){
 					//$array 
 					foreach ($result as $row) {
@@ -206,8 +312,9 @@ if(isset($this->session->userdata['logged_in'])){
 							'usuario'=>$row->usuario,
 							'nombre'=>$row->nombre,
 							'apellido'=>$row->apellido_paterno.' '.$row->apellido_materno,
-							'plantel'=>$row->id_plantel,
-							'id_usuario'=>$row->id_usuario
+							'plantel'=>$row->plantel,
+							'id_usuario'=>$row->id_usuario,
+							'privilegios'=>$row->privilegios
 							);
 					}
 				}

@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://127.0.0.1/patronato';
+$config['base_url'] = 'http://192.168.0.104/patronato';
 
 /*
 |--------------------------------------------------------------------------

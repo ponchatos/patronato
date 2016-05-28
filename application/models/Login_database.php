@@ -50,6 +50,15 @@ public function read_users(){
 	}
 }
 
+public function read_vista_users(){
+	$query=$this->db->get('vista_usuario');
+	if($query->num_rows()>0){
+		return $query->result();
+	}else{
+		return FALSE;
+	}
+}
+
 public function delete_user($username){
 	if($this->user_exists($username)){
 		$this->db->where('usuario',$username);

@@ -15,7 +15,9 @@ public function registrar_alumno($data){
 		'domicilio'=>$data['domicilio'],
 		'correo'=>$data['correo'],
 		'telefono'=>$data['telefono'],
-		'id_talla'=>$data['id_talla']
+		'telefonocel'=>$data['telefonocel'],
+		'telefonotrabajo'=>$data['telefonotrabajo'],
+		'id_talla'=>$data['id_talla'],
 		);
 	$query = $this->registrar_datos_personales($send);
 	if($query==FALSE){
@@ -81,6 +83,14 @@ public function registrar_datos_personales($data){
 	}
 }
 
+public function registrar_grupo($data){
+	$this->db->insert('grupos',$data);
+	if($this->db->affected_rows()>0){
+		return $this->db->insert_id();
+	}else{
+		return FALSE;
+	}
+}
 
 }
 

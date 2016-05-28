@@ -28,8 +28,8 @@
 
         <form action=<?php echo '"'.base_url().'user_authentication/user_login_process/"'; ?> method="post">
           <?php echo validation_errors(); ?>
-            <input type="text" name="username" class="text" placeholder="USUARIO" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'USERNAME';}" >
-            <input type="password" name="password" placeholder="CONTRASEÑA" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Password';}">
+            <input type="text" name="username" class="text" placeholder="USUARIO" >
+            <input type="password" name="password" placeholder="CONTRASEÑA">
             <div class="submit">
               <input type="submit" onclick="myFunction()" value="ACCEDER" >
           </div>  
