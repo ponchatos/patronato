@@ -74,6 +74,30 @@ Class Leer_Datos extends CI_Model {
 
 	}
 
+	public function get_inscrito_info($folio){
+		$this->db->where('folio',$folio);
+		$query=$this->db->get('vista_recibo');
+		if($query->num_rows()==1){
+			$return=array(
+				'nombre'=>$query->row(0)->nombre." ".$query->row(0)->apellido_paterno." ".$query->row(0)->apellido_materno,
+				'fec_nac'=>$query->row(0)->fecha_nac,
+				'nombre_tutor'=>$query->row(0)->pad_nombre." ".$query->row(0)->pad_apellido_p." ".$query->row(0)->pad_apellido_m,
+				'domicilio'=>$query->row(0)->domicilio,
+				'telefono'=>$query->row(0)->telefono,
+				'escuela'=>$query->row(0)->escuela,
+				'plantel'=>$query->row(0)->plantel,
+				'curso'=>$query->row(0)->curso,
+				'taller'=>$query->row(0)->taller,
+				'costo'=>$query->row(0)->costo,
+				'f_registro'=>$query->row(0)->f_registro
+				);
+			return $return;
+		}else{
+			return FALSE;
+		}
+	}
+
+
 }
 
 ?>

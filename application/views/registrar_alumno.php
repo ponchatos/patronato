@@ -1,3 +1,4 @@
+<link rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 <style type="text/css">
 	/* The Modal (background) */
 	.modal {
@@ -59,20 +60,6 @@
 	    color: white;
 	}
 
-	/* Modal Content */
-	/*.modal-content {
-	    position: relative;
-	    background-color: #fefefe;
-	    margin: auto;
-	    padding: 0;
-	    border: 1px solid #888;
-	    width: 80%;
-	    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-	    -webkit-animation-name: animatetop;
-	    -webkit-animation-duration: 0.4s;
-	    animation-name: animatetop;
-	    animation-duration: 0.4s
-	}*/
 
 	/* Add Animation */
 	@-webkit-keyframes animatetop {
@@ -84,96 +71,146 @@
 	    from {top: -300px; opacity: 0}
 	    to {top: 0; opacity: 1}
 	}
+
+	/* Tooltip container */
+	.toolclass {
+	    background-color: red !important;
+	    //border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+	}
+
+	/* Tooltip text */
+	.tooltipp .tooltiptext {
+	    visibility: hidden;
+	    width: 120px;
+	    background-color: #555;
+	    color: #fff;
+	    text-align: center;
+	    padding: 5px 0;
+	    border-radius: 6px;
+
+	    /* Position the tooltip text */
+	    position: absolute;
+	    z-index: 1;
+	    bottom: 125%;
+	    left: 50%;
+	    margin-left: -60px;
+
+	    /* Fade in tooltip */
+	    opacity: 0;
+	    transition: opacity 1s;
+	}
+
+	/* Tooltip arrow */
+	.tooltipp .tooltiptext::after {
+	    content: "";
+	    position: absolute;
+	    top: 100%;
+	    left: 50%;
+	    margin-left: -5px;
+	    border-width: 5px;
+	    border-style: solid;
+	    border-color: #555 transparent transparent transparent;
+	}
+
+	/* Show the tooltip text when you mouse over the tooltip container */
+	.tooltipp:hover .tooltiptext {
+	    visibility: visible;
+	    opacity: 1;
+	}
+
 </style>
 <form id="form" method="post" action="<?php echo base_url(); ?>administracion/registrar_alumno">
 	<?php echo validation_errors(); ?>
 	<?php if(isset($message)) echo $message."<br>"; ?>
-	<select form="form" id="id_plantel" name="id_plantel" required>
-		<option disabled selected value>Seleccione un plantel</option>
-		<?php
-			if(isset($planteles))
-				foreach ($planteles as $row) {
-					echo '<option value="'.$row['id_plantel'].'">'.$row['nombre'].'</option>';
-				}
-		?>
-	</select><br>
-	<input type="text" name="nombre" placeholder="Nombre del niño" required/><br>
-	<input type="text" name="apellido_paterno" placeholder="Apellido Paterno" required/><br>
-	<input type="text" name="apellido_materno" placeholder="Apellido Materno" required/><br>
-	<input type="date" name="fecha_nac" required/><br>
-	<input type="text" name="escuela" placeholder="Escuela donde estudia" required/><br>
-	<input type="text" name="pad_nombre" placeholder="Nombre del Padre" required/><br>
-	<input type="text" name="pad_apellido_p" placeholder="Apellido Paterno del Padre" required/><br>
-	<input type="text" name="pad_apellido_m" placeholder="Apellido Materno de la Madre" required/><br>
-	<input type="text" name="domicilio" placeholder="Domicilio" required/><br>
-	<input type="email" name="correo" placeholder="Correo electrónico" required/><br>
-	<input type="number" name="telefono" placeholder="Número de Teléfono" required/>
-	<input type="number" name="telefonocel" placeholder="Número Celular" required/>
-	<input type="number" name="telefonotrabajo" placeholder="Número Teléfono de Trabajo" required/>
-	<select form="form" id="id_nivel" name="id_nivel" required>
-		<option disabled selected value>Seleccione el grado</option>
-		<option disabled>Preescolar</option>
-		<option value="1">1ro</option>
-		<option value="2">2do</option>
-		<option value="3">3ro</option>
-		<option disabled>Primaria</option>
-		<option value="4">1ro</option>
-		<option value="5">2do</option>
-		<option value="6">3ro</option>
-		<option value="7">4to</option>
-		<option value="8">5to</option>
-		<option value="9">6to</option>
-		<option disabled>Secundaria</option>
-		<option value="10">1ro</option>
-		<option value="11">2do</option>
-		<option value="12">3ro</option>
-	</select>
-	<br>
-	//Aqui tenemos que mostrar solamente del 1 al 11 si selecciona cualquiera menos 6to o mate basico<br>
-	//si selecciona 6to mostramos del 13 al 15<br>
-	//y si selecciona mates basicas automaticamente se selecciona mate basico y no deja cambiar<br>
-	<select form="form" id="id_programa" name="id_programa" required>
-		<option disabled selected value>Seleccione el programa</option>
-		<?php
-			if(isset($programas))
-				foreach ($programas as $row) {
-					echo '<option value="'.$row['id_programa'].'">'.$row['nombre'].'</option>';
-				}
-		?>
-	</select>
-	<br>
-	//esto solo se mostrara en caso de seleccionar 6to<br>
-	<input type="text" id="input_secundaria" name="secundaria" placeholder="Secundaria a ingresar" /><br>
-	//aqui falta meter realmente los id de los grupos y los registrados que hay actualmente en cada uno dependiendo el taller<br>
-	//tambien mostraremos unicamente los grupos dependiendo el plantel y o si son de 6to o mate basica
-	<select form="form" id="id_grupo" name="id_grupo" required>
-		<option disabled selected value>Seleccione un Grupo</option>
-		<option disabled value>Seleccione Plantel primeramente</option>
-	</select>
-	<button id="myBtn">Agregar Grupo</button>
-	<br>
-	//aqui ira un boton para agregar grupo el cual funcionara con ajax, para no recargar la pagina
-	<select form="form" name="id_talla" required>
-		<?php
-			if(isset($tallas))
-				foreach ($tallas as $row) {
-					echo '<option value="'.$row['id_talla'].'">'.$row['talla'].'</option>';
-				}
-		?>
-	</select>
-	<select form="form" id="id_entero" name="id_entero" required>
-		<?php
-			if(isset($como_entero))
-				foreach ($como_entero as $row) {
-					echo '<option value="'.$row['id_entero'].'">'.$row['nombre'].'</option>';
-				}
-		?>
-	</select><br>
-	<input type="text" id="input_entero" name="entero" placeholder="Otros"/>
-	<br><br>
-	<input type="number" name="costo" placeholder="Costo $$"/>
-	<br><br>
-	<input type="submit" name="enviar" value="Registrar"/>
+	<div id="inputs">
+		<select form="form" id="id_plantel" name="id_plantel" required>
+			<option disabled selected value>Seleccione un plantel</option>
+			<?php
+				if(isset($planteles))
+					foreach ($planteles as $row) {
+						echo '<option value="'.$row['id_plantel'].'">'.$row['nombre'].'</option>';
+					}
+			?>
+		</select><br><br><br>
+		
+		<input title="Ingrese el nombre del niño" type="text" name="nombre" placeholder="Nombre del niño" required/><br>
+		<input title="Ingrese el apellido paterno del niño" type="text" name="apellido_paterno" placeholder="Apellido Paterno" required/><br>
+		<input title="Ingrese el apellido materno del niño" type="text" name="apellido_materno" placeholder="Apellido Materno" required/><br>
+		<input type="date" name="fecha_nac" required/><br>
+		<input type="text" name="escuela" placeholder="Escuela donde estudia" required/><br>
+		<input type="text" name="pad_nombre" placeholder="Nombre del Padre" required/><br>
+		<input type="text" name="pad_apellido_p" placeholder="Apellido Paterno del Padre" required/><br>
+		<input type="text" name="pad_apellido_m" placeholder="Apellido Materno de la Madre" required/><br>
+		<input type="text" name="domicilio" placeholder="Domicilio" required/><br>
+		<input type="email" name="correo" placeholder="Correo electrónico" required/><br>
+		<input type="number" name="telefono" placeholder="Número de Teléfono" required/>
+		<input type="number" name="telefonocel" placeholder="Número Celular" required/>
+		<input type="number" name="telefonotrabajo" placeholder="Número Teléfono de Trabajo" required/>
+		<select form="form" id="id_nivel" name="id_nivel" required>
+			<option disabled selected value>Seleccione el grado</option>
+			<option disabled>Preescolar</option>
+			<option value="1">1ro</option>
+			<option value="2">2do</option>
+			<option value="3">3ro</option>
+			<option disabled>Primaria</option>
+			<option value="4">1ro</option>
+			<option value="5">2do</option>
+			<option value="6">3ro</option>
+			<option value="7">4to</option>
+			<option value="8">5to</option>
+			<option value="9">6to</option>
+			<option disabled>Secundaria</option>
+			<option value="10">1ro</option>
+			<option value="11">2do</option>
+			<option value="12">3ro</option>
+		</select>
+		<br>
+		//Aqui tenemos que mostrar solamente del 1 al 11 si selecciona cualquiera menos 6to o mate basico<br>
+		//si selecciona 6to mostramos del 13 al 15<br>
+		//y si selecciona mates basicas automaticamente se selecciona mate basico y no deja cambiar<br>
+		<select form="form" id="id_programa" name="id_programa" required>
+			<option disabled selected value>Seleccione el programa</option>
+			<?php
+				if(isset($programas))
+					foreach ($programas as $row) {
+						echo '<option value="'.$row['id_programa'].'">'.$row['nombre'].'</option>';
+					}
+			?>
+		</select>
+		<br>
+		//esto solo se mostrara en caso de seleccionar 6to<br>
+		<input type="text" id="input_secundaria" name="secundaria" placeholder="Secundaria a ingresar" /><br>
+		//aqui falta meter realmente los id de los grupos y los registrados que hay actualmente en cada uno dependiendo el taller<br>
+		//tambien mostraremos unicamente los grupos dependiendo el plantel y o si son de 6to o mate basica
+		<select form="form" id="id_grupo" name="id_grupo" required>
+			<option disabled selected value>Seleccione un Grupo</option>
+			<option disabled value>Seleccione Plantel primeramente</option>
+		</select>
+		<button id="myBtn">Agregar Grupo</button>
+		<br>
+		//aqui ira un boton para agregar grupo el cual funcionara con ajax, para no recargar la pagina
+		<select form="form" name="id_talla" required>
+			<?php
+				if(isset($tallas))
+					foreach ($tallas as $row) {
+						echo '<option value="'.$row['id_talla'].'">'.$row['talla'].'</option>';
+					}
+			?>
+		</select>
+		<select form="form" id="id_entero" name="id_entero" required>
+			<?php
+				if(isset($como_entero))
+					foreach ($como_entero as $row) {
+						echo '<option value="'.$row['id_entero'].'">'.$row['nombre'].'</option>';
+					}
+			?>
+		</select><br>
+		<input type="text" id="input_entero" name="entero" placeholder="Otros"/>
+		<br><br>
+		<input type="number" name="costo" placeholder="Costo $$"/>
+		<br><br>
+		<input type="submit" name="enviar" value="Registrar"/>
+	</div>
 </form>
 
 <!-- The Modal -->
@@ -203,16 +240,39 @@
     <h3>Modal Footer</h3>
   </div>-->
   </div>
-
+  <?php 
+  	if(isset($folio)){
+  		echo '<form id="folio_form" action="'.base_url().'pdf_creator/recibo_pdf" method="post" target="_blank">
+  			<input type="hidden" name="folio" value="'.$folio.'"/>
+  		</form>';
+  	}
+  ?>
 </div>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+<script src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script type="text/javascript">
+ $(function() {
+  
+    // Call the documents tooltip function
+    // This will find all the input elements and
+    // add their titles to the Tooltip
+    $( document ).tooltip();
+    
+  });
+</script>
 <script type="text/javascript">
 		// Ajax post
 		$(document).ready(function() {
+
 			var nivel_changed = false;
 			$("#input_secundaria").hide();
 			$("#input_entero").hide();
 
+
+			<?php
+				if(isset($folio))
+					echo '$( "#folio_form" ).submit();';
+			?>
 			$("#id_entero").change(function() {
 				if($("#id_entero option:selected").text().search('Otros')>=0){
 					$("#input_entero").show();

@@ -28,7 +28,7 @@ public function prueba(){
 	//var_dump($this->leer_datos->get_spinner_datas());
 	//$data=$this->leer_datos->get_spinner_datas();
 
-	//$this->load->view('pruebas');
+	$this->load->view('pruebas');
 }
 
 public function index(){
@@ -187,6 +187,7 @@ public function registrar_alumno(){
 				$arreglo=array();
 				$arreglo=$this->leer_datos->get_spinner_datas();
 				$arreglo['message']="Usuario registrado correctamente con el Folio: ".$result;
+				$arreglo['folio']=$result;
 				$this->load->view('barra_nav');
 				$this->load->view('registrar_alumno',$arreglo);
 			}else{
