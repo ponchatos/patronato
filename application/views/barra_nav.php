@@ -9,8 +9,7 @@
 </head>
 <body>
 <header id="main-header">
-        
-        <img id="logo-header" id="tipo" src="<?php echo base_url();?>css/images/pat.jpg">
+        <img  id="logo-header" src="<?php echo base_url();?>css/images/og.png">
         <nav>
             <ul>
                 <li><a href="#">REGISTRO</a></li>
