@@ -122,6 +122,7 @@
 <form id="form" method="post" action="<?php echo base_url(); ?>administracion/registrar_alumno">
 	<?php echo validation_errors(); ?>
 	<?php if(isset($message)) echo $message."<br>"; ?>
+	<?php if($this->session->flashdata("success") != FALSE) echo $this->session->flashdata("success")['message']; ?>
 	<div id="inputs">
 		<select form="form" id="id_plantel" name="id_plantel" required>
 			<option disabled selected value>Seleccione un plantel</option>
@@ -164,6 +165,7 @@
 			<option value="11">2do</option>
 			<option value="12">3ro</option>
 		</select>
+		<input id="hddn_id_nivel" type="hidden" name="id_nivel" disabled/>
 		<br>
 		//Aqui tenemos que mostrar solamente del 1 al 11 si selecciona cualquiera menos 6to o mate basico<br>
 		//si selecciona 6to mostramos del 13 al 15<br>
@@ -177,6 +179,7 @@
 					}
 			?>
 		</select>
+		<input id="hddn_id_programa" type="hidden" name="id_programa" disabled/>
 		<br>
 		//esto solo se mostrara en caso de seleccionar 6to<br>
 		<input type="text" id="input_secundaria" name="secundaria" placeholder="Secundaria a ingresar" /><br>
@@ -209,7 +212,7 @@
 		<br><br>
 		<input type="number" name="costo" placeholder="Costo $$"/>
 		<br><br>
-		<input type="submit" name="enviar" value="Registrar"/>
+		<input type="submit" name="enviar" value="Registrar">
 	</div>
 </form>
 
@@ -241,9 +244,9 @@
   </div>-->
   </div>
   <?php 
-  	if(isset($folio)){
+  	if($this->session->flashdata("success") != FALSE){
   		echo '<form id="folio_form" action="'.base_url().'pdf_creator/recibo_pdf" method="post" target="_blank">
-  			<input type="hidden" name="folio" value="'.$folio.'"/>
+  			<input type="hidden" name="folio" value="'.$this->session->flashdata("success")['folio'].'"/>
   		</form>';
   	}
   ?>
@@ -270,7 +273,7 @@
 
 
 			<?php
-				if(isset($folio))
+				if($this->session->flashdata("success") != FALSE)
 					echo '$( "#folio_form" ).submit();';
 			?>
 			$("#id_entero").change(function() {
@@ -281,20 +284,25 @@
 				}
 			});
 
+
 			$("#id_plantel").change(function() {
 				event.preventDefault();
 				var plantel_selected = $("select#id_plantel").val();
 				var nombre_plantel_selected = $("#id_plantel option:selected").text();
-				if(nombre_plantel_selected=="Mate Básico"){
+				if(nombre_plantel_selected.search("Mate Básico")>=0){
 					$('select#id_programa').find('option').each(function() {
 					    if($(this).text()=="Mate Básico"){
 					    	$("#id_programa").val($(this).val());
 					    	$("#id_programa").prop('disabled', true);
+					    	$("#hddn_id_programa").val($(this).val());
+					    	$("#hddn_id_programa").prop('disabled', false);
 					    }
 					});
 				}else{
 					$("#id_programa").val('');
 					$("#id_programa").prop('disabled', false);
+					$("#hddn_id_programa").val('');
+					$("#hddn_id_programa").prop('disabled', true);
 				}
 				if(nombre_plantel_selected.search('Inducción')>=0){
 					$("#id_programa").html('<option disabled selected value>Seleccione el programa</option>');
@@ -308,6 +316,8 @@
 					nivel_changed=true;
 					$("select#id_nivel").val(9);
 					$("select#id_nivel").prop('disabled', true);
+					$("#hddn_id_nivel").val(9);
+					$("#hddn_id_nivel").prop('disabled', false);
 					$("#input_secundaria").show();
 				}else if(nivel_changed){
 					$("#id_programa").html('<option disabled selected value>Seleccione el programa</option>');
@@ -320,6 +330,8 @@
 					nivel_changed=false;
 					$("select#id_nivel").val('');
 					$("select#id_nivel").prop('disabled', false);
+					$("#hddn_id_nivel").val('');
+					$("#hddn_id_nivel").prop('disabled', true);
 					$("#input_secundaria").hide();
 				}
 				

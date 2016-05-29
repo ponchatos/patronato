@@ -27,8 +27,13 @@ $this->load->model('metodos');
 public function prueba(){
 	//var_dump($this->leer_datos->get_spinner_datas());
 	//$data=$this->leer_datos->get_spinner_datas();
-
+	//$this->load->helper('date');
+	//echo mdate("%Y-%m-%d", gmt_to_local(time(), 'UM7', FALSE));
+	//echo unix_to_human(gmt_to_local(time(), 'UM7', FALSE));
 	$this->load->view('pruebas');
+	//$arreglo['message']="Usuario registrado correctamente con el Folio: ";
+	//$this->session->set_flashdata("success", $arreglo);
+	//redirect(base_url()."administracion/",'refresh');
 }
 
 public function index(){
@@ -145,6 +150,7 @@ public function registrar_alumno(){
 		}else{
 			$retu = $this->login_database->read_user_information($this->session->userdata['logged_in']['username']);
 			//echo $retu->id_alumno;
+			$this->load->helper('date');
 			$data= array(
 				'nombre'=>$this->input->post('nombre'),
 				'apellido_paterno'=>$this->input->post('apellido_paterno'),
@@ -167,7 +173,8 @@ public function registrar_alumno(){
 				'id_grupo'=>$this->input->post('id_grupo'),
 				'id_nivel'=>$this->input->post('id_nivel'),
 				'id_usuario'=>$retu->id_usuario,
-				'costo'=>$this->input->post('costo')
+				'costo'=>$this->input->post('costo'),
+				'f_registro'=>mdate("%Y-%m-%d", gmt_to_local(time(), 'UM7', FALSE))
 				);
 			if($this->input->post('telefonocel')==null){
 				$data['telefonocel']="";
@@ -188,8 +195,10 @@ public function registrar_alumno(){
 				$arreglo=$this->leer_datos->get_spinner_datas();
 				$arreglo['message']="Usuario registrado correctamente con el Folio: ".$result;
 				$arreglo['folio']=$result;
-				$this->load->view('barra_nav');
-				$this->load->view('registrar_alumno',$arreglo);
+				$this->session->set_flashdata("success", $arreglo);
+				redirect(base_url()."administracion/",'refresh');
+				//$this->load->view('barra_nav');
+				//$this->load->view('registrar_alumno',$arreglo);
 			}else{
 				$arreglo=array();
 				$arreglo=$this->leer_datos->get_spinner_datas();
@@ -201,6 +210,12 @@ public function registrar_alumno(){
 	}else{
 		redirect(base_url(),'refresh');
 	}
+}
+
+public function busqueda(){
+	$send=$this->leer_datos->get_lista_busqueda();
+	$this->load->view('barra_nav');
+	$this->load->view('busqueda',$send);
 }
 
 public function admin_users(){

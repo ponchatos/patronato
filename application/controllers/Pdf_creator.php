@@ -25,13 +25,17 @@ public function __construct(){
             $folio=$this->input->post('folio');
             $result=$this->leer_datos->get_inscrito_info($folio);
             if($result!=FALSE){
+                $fol=$folio;
+                while(strlen($fol)<5){
+                    $fol='0'.$fol;
+                }
                 // create new PDF document
                 $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);   
               
                 // set document information
                 $pdf->SetCreator(PDF_CREATOR);
                 $pdf->SetAuthor('Patronato');
-                $pdf->SetTitle('Folio');
+                $pdf->SetTitle('Recibo Inscripcion - '.$fol.'.pdf');
                 $pdf->SetSubject('Folio de inscripcion');
                 $pdf->SetKeywords('Folio, PDF, patronato');  
               
@@ -106,7 +110,7 @@ public function __construct(){
                 //Cell($w, $h=0, $txt='', $border=0, $ln=0, $align='', $fill=0, $link='', $stretch=0, $ignore_min_height=false, $calign='T', $valign='M')
                 $pdf->SetTextColor(255,0,0);
                 $pdf->SetXY(185,6);
-                $pdf->cell(20,10,$folio,0,0,'L',false,'',1);
+                $pdf->cell(20,10,$fol,0,0,'L',false,'',1);
                 $pdf->SetTextColor(0,0,0);
                 $pdf->SetXY(59,34);
                 $pdf->cell(128,5,$result['nombre'],0,0,'L',false,'',1);
@@ -127,15 +131,17 @@ public function __construct(){
                 $pdf->SetXY(35,110);
                 $pdf->cell(86,5,$result['taller'],0,0,'L',false,'',1);
                 $pdf->SetXY(63,117);
-                $pdf->cell(58,5,'11 al 29 de Julio',0,0,'L',false,'',1);
+                $pdf->cell(58,5,'11 al 29 de Julio del 2016',0,0,'L',false,'',1);
                 $pdf->SetXY(36,123.5);
                 $pdf->cell(85,5,$result['costo'],0,0,'L',false,'',1);
-                $pdf->SetXY(63,130.5);
-                $pdf->cell(58,5,$result['f_registro'],0,0,'L',false,'',1);
-
+                $pdf->SetXY(36,130.5);
+                $pdf->cell(85,5,$result['grupo'],0,0,'L',false,'',1);
+                $pdf->SetXY(175,21);
+                $pdf->cell(30,5,$result['f_registro'],0,0,'L',false,'',1);
+                
                 $pdf->SetTextColor(255,0,0);
                 $pdf->SetXY(185,154);
-                $pdf->cell(20,10,$folio,0,0,'L',false,'',1);
+                $pdf->cell(20,10,$fol,0,0,'L',false,'',1);
                 $pdf->SetTextColor(0,0,0);
                 $pdf->SetXY(59,182.5);
                 $pdf->cell(128,5,$result['nombre'],0,0,'L',false,'',1);
@@ -157,35 +163,15 @@ public function __construct(){
                 $pdf->SetXY(35,258.5);
                 $pdf->cell(86,5,$result['taller'],0,0,'L',false,'',1);
                 $pdf->SetXY(63,266);
-                $pdf->cell(58,5,'11 al 29 de Julio',0,0,'L',false,'',1);
+                $pdf->cell(58,5,'11 al 29 de Julio del 2016',0,0,'L',false,'',1);
                 $pdf->SetXY(36,272);
                 $pdf->cell(85,5,$result['costo'],0,0,'L',false,'',1);
-                $pdf->SetXY(63,279.5);
-                $pdf->cell(58,5,$result['f_registro'],0,0,'L',false,'',1);
-                /*$tecst = strtoupper($competidor_info->nombre);
-                if($carrera_info->id_carrera==3){
-                    $categoria = strtoupper($competidor_info->categoria);
-                    $pos = strtoupper($competidor_info->lugar_categoria);
-                    $tiempo = strtoupper($competidor_info->tiempo);
-                    $pdf->SetXY(104,87);
-                    $pdf->cell(184,15,$tecst,0,0,'C',false,'',1);
-                    $pdf->SetXY(108,119);
-                    $pdf->cell(70,15,$categoria,0,0,'C',false,'',1);
-                    $pdf->SetXY(218,119);
-                    $pdf->cell(70,15,$pos."° LUGAR",0,0,'C',false,'',1);
-                    $pdf->SetXY(168,135);
-                    $pdf->cell(70,15,$tiempo,0,0,'C',false,'',1);
-                }else{
-                    $pdf->SetXY(50,120);
-                    $pdf->cell(230,15,$tecst,0,0,'C',false,'',1);
-                }*/
-
+                $pdf->SetXY(36,279.5);
+                $pdf->cell(85,5,$result['grupo'],0,0,'L',false,'',1);
+                $pdf->SetXY(175,169);
+                $pdf->cell(30,5,$result['f_registro'],0,0,'L',false,'',1);
                 
-             
-              
-                // Close and output PDF document
-                // This method has several options, check the source code documentation for more information.
-                $salida = 'folio.pdf';
+                $salida = 'folio'.$fol.'.pdf';
                 $pdf->Output($salida, 'I');   
             }else{
                 $data=$this->leer_datos->get_spinner_datas();
@@ -197,7 +183,6 @@ public function __construct(){
     }
 
     public function prueba(){
-        echo strlen(12);
     }
 
 	public function create_pdf() {

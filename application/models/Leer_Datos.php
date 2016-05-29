@@ -76,7 +76,7 @@ Class Leer_Datos extends CI_Model {
 
 	public function get_inscrito_info($folio){
 		$this->db->where('folio',$folio);
-		$query=$this->db->get('vista_recibo');
+		$query=$this->db->get('vista_recibo2');
 		if($query->num_rows()==1){
 			$return=array(
 				'nombre'=>$query->row(0)->nombre." ".$query->row(0)->apellido_paterno." ".$query->row(0)->apellido_materno,
@@ -88,9 +88,43 @@ Class Leer_Datos extends CI_Model {
 				'plantel'=>$query->row(0)->plantel,
 				'curso'=>$query->row(0)->curso,
 				'taller'=>$query->row(0)->taller,
+				'grupo'=>$query->row(0)->grupo,
 				'costo'=>$query->row(0)->costo,
 				'f_registro'=>$query->row(0)->f_registro
 				);
+			return $return;
+		}else{
+			return FALSE;
+		}
+	}
+
+	public function get_lista_busqueda(){
+		$query=$this->db->get('vista_listas2');
+		if($query->num_rows()>0){
+			$return['datos_tabla']=array();
+			foreach ($query->result() as $row) {
+				$return['datos_tabla'][]=array(
+					'folio'=>$row->folio,
+					'nombre'=>$row->nombre." ".$row->apellido_paterno." ".$row->apellido_materno,
+					'nombre_tutor'=>$row->pad_nombre." ".$row->pad_apellido_p." ".$row->pad_apellido_m,
+					'domicilio'=>$row->domicilio,
+					'telefono'=>$row->telefono,
+					'celular'=>$row->telefonocel,
+					't_trabajo'=>$row->telefonotrabajo,
+					'escuela'=>$row->escuela,
+					'grado'=>$row->grado." ".$row->nivel,
+					'plantel'=>$row->plantel,
+					'curso'=>$row->curso,
+					'taller'=>$row->taller,
+					'grupo'=>$row->grupo,
+					'turno'=>$row->turno,
+					'entero'=>$row->entero,
+					'q_registro'=>$row->NombreU." ".$row->ApellidoU." ".$row->PlantelUs,
+					'costo'=>$row->costo,
+					'f_registro'=>$row->f_registro
+				);
+
+			}
 			return $return;
 		}else{
 			return FALSE;

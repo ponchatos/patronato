@@ -24,7 +24,7 @@ public function registrar_alumno($data){
 		return FALSE;
 	}else{
 		if($data['id_entero']>3){
-			$entero=registrar_entero($data['entero']);
+			$entero=$this->registrar_entero($data['entero']);
 		}else{
 			$entero=$data['id_entero'];
 		}
@@ -36,7 +36,8 @@ public function registrar_alumno($data){
 			'id_grupo'=>$data['id_grupo'],
 			'id_nivel'=>$data['id_nivel'],
 			'id_entero'=>$entero,
-			'costo'=>$data['costo']
+			'costo'=>$data['costo'],
+			'f_registro'=>$data['f_registro']
 			);
 		$return = $this->registrar_inscripcion($sendd);
 		if($return!=FALSE){
