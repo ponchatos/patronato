@@ -70,15 +70,9 @@ th {
 	color:#3F3D3D;
 }
 
-.left-form{
-		float:left;
-	margin:22px 28px;
-	width:40%;
-}
-
-.right-form{
+.left-form,.right-form{
 	float:left;
-	margin:22px 80px;
+	margin:22px 28px;
 	width:40%;
 }
 .left-form input[type=text],.left-form input[type=email],.left-form input[type=password] {

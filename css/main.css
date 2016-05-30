@@ -6,16 +6,19 @@
 	#main-header a {
 		color: white;
 	}
+	img{
+			width: 200px;
+ 	height: 100px;
+ 	display: inline-block;
+	}
  
- #tipo{
 
- }
 #logo-header {
 	float: left;
 
 	text-decoration: none;
-	width: 250px;
-	height: 125px;
+	width: 200px;
+	height: 100px;
 	display: inline-block;
 	font-family: 'Lato', sans-serif;
 	font-style: bold;
