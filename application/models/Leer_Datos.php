@@ -112,7 +112,7 @@ Class Leer_Datos extends CI_Model {
 					'celular'=>$row->telefonocel,
 					't_trabajo'=>$row->telefonotrabajo,
 					'escuela'=>$row->escuela,
-					'grado'=>$row->grado." ".$row->nivel,
+					'grado'=>$row->grado."° ".$row->nivel,
 					'plantel'=>$row->plantel,
 					'curso'=>$row->curso,
 					'taller'=>$row->taller,

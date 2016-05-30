@@ -213,9 +213,13 @@ public function registrar_alumno(){
 }
 
 public function busqueda(){
-	$send=$this->leer_datos->get_lista_busqueda();
-	$this->load->view('barra_nav');
-	$this->load->view('busqueda',$send);
+	if(isset($this->session->userdata['logged_in'])){
+		$send=$this->leer_datos->get_lista_busqueda();
+		$this->load->view('barra_nav');
+		$this->load->view('busqueda',$send);
+	}else{
+		redirect(base_url(),'refresh');
+	}
 }
 
 public function admin_users(){
