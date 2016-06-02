@@ -22,7 +22,7 @@
 	<form id="form" method="post" action="<?php echo base_url(); ?>administracion/registrar_alumno">
 		<?php echo validation_errors(); ?>
 		<?php if(isset($message)) echo $message."<br>"; ?>
-		
+		<?php if($this->session->flashdata("success") != null) //echo $this->session->flashdata("success")['message']; ?>
 		<ul class="left-form">
 			<select form="form" id="id_plantel" name="id_plantel" required>
 				<option disabled selected value>Seleccione un plantel</option>
@@ -36,15 +36,15 @@
 			<br>
           <h2>Datos del Niño:</h2>
 		<li>
-			<input title="Ingrese el nombre del niño" type="text" name="nombre" placeholder="Nombre del niño" required/></a>
+			<input style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" title="Ingrese el nombre del niño" type="text" name="nombre" placeholder="Nombre del niño" required/></a>
 			<div class="clear"> </div>
         </li> 
         <li>
-        	<input title="Ingrese el apellido paterno del niño" type="text" name="apellido_paterno" placeholder="Apellido Paterno" required/></a>
+        	<input style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" title="Ingrese el apellido paterno del niño" type="text" name="apellido_paterno" placeholder="Apellido Paterno" required/></a>
 			<div class="clear"> </div>
         </li> 
 		<li>
-			<input title="Ingrese el apellido materno del niño" type="text" name="apellido_materno" placeholder="Apellido Materno" required/></a>
+			<input style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" title="Ingrese el apellido materno del niño" type="text" name="apellido_materno" placeholder="Apellido Materno" required/></a>
 			<div class="clear"> </div>
         </li> 
         <li>
@@ -53,7 +53,7 @@
         </li>
              <h3>Información Escolar:</h3>
             <li>
-            	<input type="text" name="escuela" placeholder="Escuela donde estudia" required/></a>
+            	<input style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" type="text" name="escuela" placeholder="Escuela donde estudia" required/></a>
             	<div class="clear"> </div>
             </li>
             <li>
@@ -75,6 +75,7 @@
 						<option value="11">2do</option>
 						<option value="12">3ro</option>
 				</select>
+				<input id="hddn_id_nivel" type="hidden" name="id_nivel" disabled/>		
             </li>
        	
             <li>
@@ -92,6 +93,7 @@
 						}
 						?>
 				</select>
+				<input id="hddn_id_programa" type="hidden" name="id_programa" disabled/>
 	         </li>
 			<li>
 				<select form="form" id="id_grupo" name="id_grupo" required>
@@ -121,21 +123,21 @@
         	 <h2>Datos Padre o Tutor:</h2>
 	       
 	        <li>
-	        	<input type="text" name="pad_nombre" placeholder="Nombre del Padre" required/></a>
+	        	<input style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" type="text" name="pad_nombre" placeholder="Nombre del Padre" required/></a>
 	        	<div class="clear"> </div>
 	        </li>
 	        <li>
-				<input type="text" name="pad_apellido_p" placeholder="Apellido Paterno del Padre" required/></a>
+				<input style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" type="text" name="pad_apellido_p" placeholder="Apellido Paterno del Padre" required/></a>
 	        	<div class="clear"> </div>
 	        </li>
 	        <li>
-	        	<input type="text" name="pad_apellido_m" placeholder="Apellido Materno de la Madre" required/></a>
+	        	<input style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" type="text" name="pad_apellido_m" placeholder="Apellido Materno de la Madre" required/></a>
 	        	<div class="clear"> </div>
 	        </li>
 
 	           <h3>Información de Contacto:</h3>
 	        <li>
-				<input type="text" name="domicilio" placeholder="Domicilio" required/></a>
+				<input style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" type="text" name="domicilio" placeholder="Domicilio" required/></a>
 				<div class="clear"> </div>
 	        </li>
 	        <li>
@@ -143,15 +145,15 @@
 	        	<div class="clear"> </div>
 	        </li>
 	        <li>
-	        	<input type="text" name="telefono" placeholder="Número de Teléfono" required/></a>
+	        	<input type="text" onkeypress="return numpositivo();" name="telefono" placeholder="Número de Teléfono" required/></a>
 	        	<div class="clear"> </div>
 	        </li>
 	        <li>
-	        	<input type="text" name="telefonocel" placeholder="Número Celular" required/></a></a>
+	        	<input type="text" onkeypress="return numpositivo();" name="telefonocel" placeholder="Número Celular" required/></a></a>
 	        	<div class="clear"> </div>
 	        </li>
 	        <li>
-	        	<input type="text" name="telefonotrabajo" placeholder="Número Teléfono de Trabajo" required/></a>
+	        	<input type="text" onkeypress="return numpositivo();" name="telefonotrabajo" placeholder="Número Teléfono de Trabajo" required/></a>
 	        	<div class="clear"> </div>
 	        </li>
 				<h3>¿Como se enteró de este curso?</h3>
@@ -167,7 +169,7 @@
 
 			</li>
 			<li>
-				<input type="text" id="input_entero" name="entero" placeholder="Otros"/></a>
+				<input style="text-transform:uppercase;" onkeyup="javascript:this.value=this.value.toUpperCase();" type="text" id="input_entero" name="entero" placeholder="Otros"/></a>
 				<div class="clear"> </div>
 
 			</li>	
@@ -212,9 +214,12 @@
   </div>-->
   </div>
   <?php 
-  	if(isset($folio)){
+  	if($this->session->flashdata("success") != FALSE){
   		echo '<form id="folio_form" action="'.base_url().'pdf_creator/recibo_pdf" method="post" target="_blank">
-  			<input type="hidden" name="folio" value="'.$folio.'"/>
+  			<input type="hidden" name="folio" value="'.$this->session->flashdata("success")['folio'].'"/>
+  		</form>';
+  		echo '<form id="folio_form_cred" action="'.base_url().'pdf_creator/credencial_pdf" method="post" target="_blank">
+  			<input type="hidden" name="folio" value="'.$this->session->flashdata("success")['folio'].'"/>
   		</form>';
   	}
   ?>
@@ -232,6 +237,14 @@
     $( document ).tooltip();
     
   });
+ 	function numpositivo() {
+		if ((event.keyCode < 48) || (event.keyCode > 57)) //numeros en ascii del 0 al 9
+		event.returnValue = false; 
+	}
+	function txNombres() {
+		if ((event.keyCode != 32) && (event.keyCode < 65) || (event.keyCode > 90) && (event.keyCode < 97) || (event.keyCode > 122))
+		event.returnValue = false;
+	}
 </script>
 <script type="text/javascript">
 		// Ajax post
@@ -243,8 +256,11 @@
 
 
 			<?php
-				if(isset($folio))
+				if($this->session->flashdata("success") != FALSE){
+					//echo '$( "#folio_form_cred" ).submit();';
+					//echo "window.open('".base_url()."pdf_creator/credencial_pdf?folio=".$this->session->flashdata("success")['folio']."');";
 					echo '$( "#folio_form" ).submit();';
+				}
 			?>
 			$("#id_entero").change(function() {
 				if($("#id_entero option:selected").text().search('Otros')>=0){
@@ -258,16 +274,22 @@
 				event.preventDefault();
 				var plantel_selected = $("select#id_plantel").val();
 				var nombre_plantel_selected = $("#id_plantel option:selected").text();
-				if(nombre_plantel_selected=="Mate Básico"){
+
+
+				if(nombre_plantel_selected.search("Mate Básico")>=0){
 					$('select#id_programa').find('option').each(function() {
 					    if($(this).text()=="Mate Básico"){
 					    	$("#id_programa").val($(this).val());
 					    	$("#id_programa").prop('disabled', true);
+					    	$("#hddn_id_programa").val($(this).val());		
+					    	$("#hddn_id_programa").prop('disabled', false);
 					    }
 					});
 				}else{
 					$("#id_programa").val('');
 					$("#id_programa").prop('disabled', false);
+					$("#hddn_id_programa").val('');		
+					$("#hddn_id_programa").prop('disabled', true);
 				}
 				if(nombre_plantel_selected.search('Inducción')>=0){
 					$("#id_programa").html('<option disabled selected value>Seleccione el programa</option>');
@@ -281,6 +303,8 @@
 					nivel_changed=true;
 					$("select#id_nivel").val(9);
 					$("select#id_nivel").prop('disabled', true);
+					$("#hddn_id_nivel").val(9);		
+					$("#hddn_id_nivel").prop('disabled', false);
 					$("#input_secundaria").show();
 				}else if(nivel_changed){
 					$("#id_programa").html('<option disabled selected value>Seleccione el programa</option>');
@@ -293,6 +317,8 @@
 					nivel_changed=false;
 					$("select#id_nivel").val('');
 					$("select#id_nivel").prop('disabled', false);
+					$("#hddn_id_nivel").val('');		
+					$("#hddn_id_nivel").prop('disabled', true);
 					$("#input_secundaria").hide();
 				}
 				

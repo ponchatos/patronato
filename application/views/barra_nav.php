@@ -9,12 +9,12 @@
 </head>
 <body>
 <header id="main-header">
-        <img  id="logo-header" src="<?php echo base_url();?>css/images/og.png">
+        <!--<img  id="logo-header" src="<?php //echo base_url();?>css/images/og.png">-->
         <nav>
             <ul>
-                <li><a href="#">REGISTRO</a></li>
-                <li><a href="#">BUSQUEDA</a></li>
-                <li><a href="#">LISTAS</a></li>
+                <li><a href="<?php echo base_url();?>administracion/">REGISTRO</a></li>
+                <li><a href="<?php echo base_url();?>administracion/busqueda">BUSQUEDA</a></li>
+                <li><a href="<?php echo base_url();?>administracion/listas">LISTAS</a></li>
             </ul>
         </nav>
  

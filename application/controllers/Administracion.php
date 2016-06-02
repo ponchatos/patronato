@@ -24,6 +24,40 @@ $this->load->model('leer_datos');
 $this->load->model('metodos');
 }
 
+public function listas(){
+	if(isset($this->session->userdata['logged_in'])){
+		$send=$this->leer_datos->get_all_grupos();
+		$this->load->view('barra_nav');
+		if($send!=FALSE){
+			$this->load->view('selec-lista',$send);
+		}else{
+			$this->load->view('selec-lista');
+		}
+	}else{
+		redirect(base_url(),'refresh');	
+	}
+}
+
+public function imp_lista(){
+	if(isset($this->session->userdata['logged_in'])){
+		$this->form_validation->set_rules('id_grupo', 'ID del Grupo', 'trim|required|xss_clean|numeric');
+
+		if ($this->form_validation->run() == FALSE) {
+			
+		}else{
+			$send=$this->leer_datos->get_grupo_lista($this->input->post('id_grupo'));
+			if($send!=FALSE)
+				$this->load->view('lista',$send);
+			else{
+				$mssg['message']='<p style="color:red;font-weight:bold;">No hay alumnos en este grupo</p>';
+				$this->load->view('lista',$mssg);
+			}
+		}
+	}else{
+		redirect(base_url(),'refresh');
+	}
+}
+
 public function prueba(){
 	//var_dump($this->leer_datos->get_spinner_datas());
 	//$data=$this->leer_datos->get_spinner_datas();

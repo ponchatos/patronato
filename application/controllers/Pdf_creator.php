@@ -7,6 +7,8 @@ public function __construct(){
 
     $this->load->helper('form');
 
+    $this->load->library('session');
+
     // Load form validation library
     $this->load->library('form_validation');
 
@@ -183,8 +185,8 @@ public function __construct(){
     }
 
     public function credencial_pdf(){
+
         $this->form_validation->set_rules('folio','Folio','trim|required|xss_clean|numeric');
-        
         if($this->form_validation->run()==FALSE){
             
             $data=$this->leer_datos->get_spinner_datas();
@@ -192,6 +194,7 @@ public function __construct(){
             $this->load->view('barra_nav');
             $this->load->view('registrar_alumno',$data);
         }else{
+            $folio=$this->input->post('folio');
 
             $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);   
           
@@ -271,31 +274,44 @@ public function __construct(){
             /*$html = '<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
             <span style="color:black;text-align:center;font-weight:bold;font-size:23pt;">ultrareultra reutlra reultraultraultraultra largisisisisisimo</span>';*/
             
-            //Cell($w, $h=0, $txt='', $border=0, $ln=0, $align='', $fill=0, $link='', $stretch=0, $ignore_min_height=false, $calign='T', $valign='M')
-            $pdf->SetTextColor(255,255,255);
-            $pdf->SetXY(141,20.5);
-            $pdf->cell(128,5,"Talleres de Verano",0,0,'L',false,'',1);
-            $pdf->SetTextColor(0,0,0);
-            $pdf->SetXY(149,27);
-            $pdf->cell(125,5,"Wendy Rubi Lopez Felix",0,0,'L',false,'',1);                
-            $pdf->SetXY(150,31);
-            $pdf->cell(125,5,"Inducción Secundaria San Miguel",0,0,'L',false,'',1);                
-            $pdf->SetTextColor(255,255,255);
-            $pdf->SetXY(101,40);
-            $pdf->cell(38,6,"Direccion",0,0,'L',false,'',1);
-            $pdf->SetXY(105,49);
-            $pdf->cell(38,5,"Baile - Grupo A",0,0,'L',false,'',1);              
-            $pdf->SetXY(110,58);
-            $pdf->cell(37,5,"29 de Julio de 2016",0,0,'L',false,'',1);                
-            $pdf->SetTextColor(0,0,0);
-            $pdf->SetXY(99,68.5);
-            $pdf->cell(52,5,"Regularización Escolar",0,0,'L',false,'',1);                
-            $pdf->SetTextColor(255,255,255);
-            $pdf->SetXY(179.5,68.3);
-            $pdf->cell(13,5,"00001",0,0,'L',false,'',1); 
+            $data=$this->leer_datos->get_credencial_info($folio);
+
+            $fol=$folio;
+            while(strlen($fol)<5){
+                $fol='0'.$fol;
+            }
+
+            if($data!=false){
+                //Cell($w, $h=0, $txt='', $border=0, $ln=0, $align='', $fill=0, $link='', $stretch=0, $ignore_min_height=false, $calign='T', $valign='M')
+                $pdf->SetTextColor(255,255,255);
+                $pdf->SetXY(141,20.5);
+                $pdf->cell(128,5,$data['curso'],0,0,'L',false,'',1);
+                $pdf->SetTextColor(0,0,0);
+                $pdf->SetXY(149,27);
+                $pdf->cell(44,5,$data['nombre'],0,0,'L',false,'',1);                
+                $pdf->SetXY(150,31);
+                $pdf->cell(43,5,$data['plantel'],0,0,'L',false,'',1);                
+                $pdf->SetTextColor(255,255,255);
+                $pdf->SetXY(101,40);
+                $pdf->cell(38,6,$data['domicilio'],0,0,'L',false,'',1);
+                $pdf->SetXY(105,49);
+                $pdf->cell(38,5,$data['grupo'],0,0,'L',false,'',1);              
+                $pdf->SetXY(110,58);
+                $pdf->cell(37,5,"29 de Julio de 2016",0,0,'L',false,'',1);                
+                $pdf->SetTextColor(0,0,0);
+                $pdf->SetXY(99,68.5);
+                $pdf->cell(52,5,$data['taller'],0,0,'L',false,'',1);                
+                $pdf->SetTextColor(255,255,255);
+                $pdf->SetXY(179.5,68.3);
+                $pdf->cell(13,5,$fol,0,0,'L',false,'',1); 
+            }
             $salida = 'folio.pdf'; 
             $pdf->Output($salida, 'I');
         }
+    }
+
+    public function prueba2(){
+        $this->load->view('pruebas');
     }
 
     public function prueba(){

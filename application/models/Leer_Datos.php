@@ -74,6 +74,27 @@ Class Leer_Datos extends CI_Model {
 
 	}
 
+	public function get_credencial_info($folio){
+		$this->db->where('folio',$folio);
+		$query=$this->db->get('vista_credencial');
+		if($query->num_rows()>0){
+			foreach ($query->result() as $row) {
+				$return=array(
+					'nombre'=>$row->nombre." ".$row->apellido_paterno." ".$row->apellido_materno,
+					'domicilio'=>$row->domicilio,
+					'plantel'=>$row->plantel,
+					'curso'=>$row->curso,
+					'taller'=>$row->taller,
+					'grupo'=>$row->grupo,
+					'turno'=>$row->turno
+				);
+				return $return;
+			}
+		}else{
+			return FALSE;
+		}
+	}
+
 	public function get_inscrito_info($folio){
 		$this->db->where('folio',$folio);
 		$query=$this->db->get('vista_recibo2');
@@ -131,6 +152,44 @@ Class Leer_Datos extends CI_Model {
 		}
 	}
 
+	public function get_all_grupos(){
+		$this->db->order_by('plantel','asc');
+		$this->db->order_by('nombre','asc');
+		$query=$this->db->get('vistas_grupos');
+		if($query->num_rows()>0){
+			$return['grupos']=array();
+			foreach ($query->result() as $row) {
+				$return['grupos'][]=array(
+					'id_grupo'=>$row->id_grupo,
+					'nombre'=>$row->nombre,
+					'plantel'=>$row->plantel
+				);
+			}
+			return $return;
+		}else{
+			return FALSE;
+		}
+	}
+
+	public function get_grupo_lista($id_grupo){
+		$this->db->where('id_grupo',$id_grupo);
+		$this->db->order_by('apellido_paterno','asc');
+		$query=$this->db->get('vista_grupo2');
+		if($query->num_rows()>0){
+			$return['lista']=array();
+			foreach ($query->result() as $row) {
+				$return['lista'][]=array(
+					'grupo'=>$row->taller,
+					'folio'=>$row->folio,
+					'nombre'=>$row->apellido_paterno." ".$row->apellido_materno." ".$row->nombre,
+					'curso'=>$row->curso
+					);
+			}
+			return $return;
+		}else{
+			return FALSE;
+		}
+	}
 
 }
 
