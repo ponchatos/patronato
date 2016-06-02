@@ -1,45 +1,14 @@
 #main-header {
-	background: #E50521;
+	background: #D00102;
 	color: white;
-	height: 75px;
+	height: 85px;
 }	
 	#main-header a {
 		color: white;
+		font-style: bold;
 	}
-	img{
-			width: 200px;
- 	height: 100px;
- 	display: inline-block;
-	}
- 
 
-#logo-header {
-	float: left;
 
-	text-decoration: none;
-	width: 200px;
-	height: 100px;
-	display: inline-block;
-	font-family: 'Lato', sans-serif;
-	font-style: bold;
-}
-	#logo-header:hover {
-		color: #960312;
-	}
-	
-	#logo-header .site-name {
-		display: block;
-		font-weight: 700;
-		font-size: 1.2em;
-	}
-	
-	#logo-header .site-desc {
-		display: block;
-		font-weight: 300;
-		font-size: 0.8em;
-		color: #999;
-	}
-	
 nav {
 	float: right;
 }

@@ -9,7 +9,7 @@
 </head>
 <body>
 <header id="main-header">
-        <!--<img  id="logo-header" src="<?php //echo base_url();?>css/images/og.png">-->
+        <img  id="logo-header" src="<?php echo base_url();?>css/images/rojo.jpg">
         <nav>
             <ul>
                 <li><a href="<?php echo base_url();?>administracion/">REGISTRO</a></li>
